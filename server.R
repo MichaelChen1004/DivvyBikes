@@ -13,19 +13,23 @@ library(chron)
 
 shinyServer(function(input, output) {
 
-    divvyData <- reactive(function() {
+    divvyData <- reactive({
       subset(divvy, gender %in% input$gender & 
              age >= input$age[1] & age <= input$age[2])
     })
     
-    output$plotTrips <- renderPlot(function() {
+    output$plotTrips <- renderPlot({
       p <- ggplot(divvyData(), aes(x=as.Date(starttime))) + geom_histogram(binwidth=1) +
            xlab("Date") + ylab("Frequency") +
-           ggtitle("Total DivvyBikesTrips Taken\n")
+           ggtitle("Total DivvyBikes Trips Taken\n")
       print(p)
     }, height=400)
+    output$TripsAvg <- renderText({
+      divvyDailyFreqs <- as.data.frame(table(as.Date(divvyData()$starttime)))
+      plotTripsAvg <- mean(divvyDailyFreqs$Freq)
+    })
     
-    output$plotDuration <- renderPlot(function() {
+    output$plotDuration <- renderPlot({
       p <- ggplot(divvyData(), aes(x=tripduration)) + geom_histogram(binwidth=0.25) +
            scale_x_continuous(limits=c(0, 40)) + xlab("Trip Duration (m)") +
            ylab("Frequency") +
@@ -33,7 +37,7 @@ shinyServer(function(input, output) {
       print(p)
     }, height=400)
     
-    output$plotDOW <- renderPlot(function() {
+    output$plotDOW <- renderPlot({
       p <- ggplot(divvyData(), aes(x=weekdays(starttime))) + geom_histogram() +
            xlab("Day-of-Week") + scale_x_discrete(limits=c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday")) +
            ylab("Frequency") +
