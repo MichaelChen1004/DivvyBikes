@@ -16,9 +16,13 @@ shinyServer(function(input, output) {
     })
     
     output$plot1 <- renderPlot(function() {
+      p <- ggplot(divvyData(), aes(x=))
+    })
+    
+    output$plot2 <- renderPlot(function() {
       p <- ggplot(divvyData(), aes(x=tripduration)) + geom_histogram() +
            scale_x_continuous(limits=c(0, 40)) + xlab("Trip Duration (m)") +
            ylab("Frequency")
       print(p)
-    }, height=400)
+    }, height=200)
 })

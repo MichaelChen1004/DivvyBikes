@@ -23,8 +23,9 @@ shinyUI(pageWithSidebar(
   ),
   
   mainPanel(
-    h3('Trip Start Times'),
+    h3('Trips Taken'),
     h3('Trip Duration'),
-    plotOutput('plot1')
+    plotOutput('plot2'),
+    h3('Trip Start Times')
   )
 ))
