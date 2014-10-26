@@ -12,20 +12,21 @@ divvyData <- divvy
 
 shinyUI(pageWithSidebar(
   
-  headerPanel("Chicago DivvyBikes Subscribers"),
+  headerPanel("Chicago DivvyBikes 2013 Subscribers"),
   
   sidebarPanel( 
     checkboxGroupInput('gender', "Gender", c("M"="Male", "F"="Female"),
                        selected=c("Male","Female")),
-    sliderInput('age', "Age", min=min(divvy$age), max=max(divvy$age),
+    sliderInput('age', "Age", min=min(divvy$age), max=62,
                 value=c(21,25), step=1),
     submitButton("Submit")
   ),
   
   mainPanel(
-    h3('Trips Taken'),
-    h3('Trip Duration'),
-    plotOutput('plot2'),
-    h3('Trip Start Times')
+    tabsetPanel(
+      tabPanel("Total Trips", plotOutput('plotTrips')),
+      tabPanel("Duration", plotOutput('plotDuration')),
+      tabPanel("Day-of-Week", plotOutput('plotDOW'))
+    )
   )
 ))
